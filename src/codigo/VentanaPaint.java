@@ -51,6 +51,8 @@ public class VentanaPaint extends javax.swing.JFrame {
     private int y1;
     private int y2;
 
+    private boolean bPainting = false;
+
     public VentanaPaint() {
         initComponents();
         inicializaBuffers();
@@ -60,7 +62,7 @@ public class VentanaPaint extends javax.swing.JFrame {
                         new ImageIcon(getClass().getResource("/codigo/iconosPaint/paleta.png"))
                                 .getImage()
                                 .getScaledInstance(jButton1.getWidth(), jButton1.getHeight(),
-                                         Image.SCALE_DEFAULT));
+                                        Image.SCALE_DEFAULT));
 
         jButton1.setIcon(miImagen);
 
@@ -373,14 +375,12 @@ public class VentanaPaint extends javax.swing.JFrame {
 
             case 1:
                 miCirculo.dibujate(bufferGraphics, evt.getX());
-                
-                
-            case 2 :
+
+            case 2:
                 //linea recta
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
                 break;
-                
-             
+
             case 3:
                 //triangulo
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
@@ -393,6 +393,25 @@ public class VentanaPaint extends javax.swing.JFrame {
             case 5:
                 //pentagono
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
+                break;
+            case 8:
+                int nMouseX = evt.getX();
+                int nMouseY = evt.getY();
+                if (bPainting) {
+                    for (int nPaint = 0; nPaint < 25; nPaint++) {
+                        //generate a random distance from 0 to 19
+                        int nRand = (int) (Math.random() * 20);
+                        //generate a random angle from 0 to 2 pi
+                        double dTheta = Math.random() * 628 / 100.0;
+                        //find x and y of random dot
+                        int nX = (int) (nMouseX + nRand * Math.cos(dTheta));
+                        int nY = (int) (nMouseY + nRand * Math.sin(dTheta));
+
+                        bufferGraphics2.setColor(colores1.colorSeleccionado);
+                        bufferGraphics2.drawOval(nX, nY, 2, 2);
+
+                    }
+                }
                 break;
             case 256:
                 //estrella
@@ -415,13 +434,13 @@ public class VentanaPaint extends javax.swing.JFrame {
                 miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colores1.colorSeleccionado, herramientas1.relleno);
                 miCirculo.dibujate(bufferGraphics, evt.getX());
                 break;
-           
+
             case 2:
                 //linea recta
-                miForma = new Linea (evt.getX(), evt.getY(), 2, colores1.colorSeleccionado, herramientas1.relleno);
+                miForma = new Linea(evt.getX(), evt.getY(), 2, colores1.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
                 break;
-                
+
             case 3:
                 miForma = new Triangulo(evt.getX(), evt.getY(), 3, colores1.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
@@ -435,6 +454,9 @@ public class VentanaPaint extends javax.swing.JFrame {
                 miForma = new Pentagono(evt.getX(), evt.getY(), 5, colores1.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
                 break;
+            case 8:
+                bPainting = true;
+                break;
             case 256:
                 miForma = new Estrella(evt.getX(), evt.getY(), 256, colores1.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
@@ -447,17 +469,13 @@ public class VentanaPaint extends javax.swing.JFrame {
         //si es el circulo lo dibuja sobre el buffer2
         if (herramientas1.formaElegida == 1) {
             miCirculo.dibujate(bufferGraphics2, evt.getX());
-           
-        
-          
-        }
-        
-        //herramienta pipeta que captura el color del pixel
-  else if(herramientas1.formaElegida == 13) {
+
+        } //herramienta pipeta que captura el color del pixel
+        else if (herramientas1.formaElegida == 13) {
             Color c = new Color(buffer.getRGB(evt.getX(), evt.getY()));
             colores1.colorSeleccionado = c;
             colores1.jLabel34.setBackground(c);
-            
+
         }
     }//GEN-LAST:event_jPanel1MouseReleased
 
@@ -479,7 +497,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-   
+
     }//GEN-LAST:event_jMenu3ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -500,7 +518,7 @@ public class VentanaPaint extends javax.swing.JFrame {
                 }
             }
         } else {
-          
+
             //mensaje de extensión no valido
         }
 
