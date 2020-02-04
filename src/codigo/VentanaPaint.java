@@ -11,11 +11,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,14 +42,13 @@ public class VentanaPaint extends javax.swing.JFrame {
     Circulo miCirculo = null;
     //para que la forma no de error
     Forma miForma = new Forma(-1, -1, 1, Color.white, false);
-    final static int SPRAY = 2;
-    Random aleatorio = new Random();
     private int x1;
     private int x2;
     private int y1;
     private int y2;
 
     private boolean bPainting = false;
+    public boolean newFile = false;
 
     public VentanaPaint() {
         initComponents();
@@ -68,28 +65,6 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     }
 
-    private void pintarSpray(MouseEvent e) {
-        Random puntitos = new Random();
-        int posX, posY;
-
-        posX = e.getX();
-        posY = e.getY();
-        int graf1, graf2;
-
-        for (int i = 0; i < 35; i++) {
-
-            graf1 = puntitos.nextInt(20);
-            graf2 = puntitos.nextInt(20);
-
-            posX = e.getX() + graf1;
-            posY = e.getY() + graf2;
-            bufferGraphics.fillOval(posX, posX, 2, 2);
-
-        }
-        repaint(0, 0, 1, 1);
-
-    }
-
     private void inicializaBuffers() {
         //queremos enlazar bufferGraphics (dibuja), jpanelGraphics.
 
@@ -98,6 +73,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         buffer = (BufferedImage) jPanel1.createImage(jPanel1.getWidth(), jPanel1.getHeight());
         buffer2 = (BufferedImage) jPanel1.createImage(jPanel1.getWidth(), jPanel1.getHeight());
         //casteo= convertir de un tipo a otro
+
         //creo una imagen modificable
         bufferGraphics = buffer.createGraphics();
         bufferGraphics2 = buffer2.createGraphics();
@@ -152,6 +128,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         jFileChooser2 = new javax.swing.JFileChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -287,6 +264,15 @@ public class VentanaPaint extends javax.swing.JFrame {
         });
 
         jMenu1.setText("Archivo");
+
+        jMenuItem3.setText("Nuevo Archivo");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Guardar");
@@ -518,7 +504,6 @@ public class VentanaPaint extends javax.swing.JFrame {
                 }
             }
         } else {
-
             //mensaje de extensión no valido
         }
 
@@ -562,6 +547,17 @@ public class VentanaPaint extends javax.swing.JFrame {
     private void jFileChooser2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFileChooser2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+//opcion de new file
+        newFile = true;
+        if (newFile == true) {
+
+            jPanel1.setBackground(Color.white);
+            inicializaBuffers();
+        }
+        newFile = false;
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -618,6 +614,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
